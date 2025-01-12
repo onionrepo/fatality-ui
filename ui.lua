@@ -84,7 +84,6 @@ ui.add_control = function(control_type, control_id, label, group, ...)
 
     setmetatable(control_obj, control_meta)
 
-    -- no switch statements :(
     if (control_type == ui.control.checkbox) then
         control_obj.control = gui.checkbox(control_id)
     elseif (control_type == ui.control.slider) then
