@@ -36,8 +36,10 @@ Accessed via ui.control.{var}
 
 ## Metatables
 ### control_meta
-Accessed via returned_control.{var}
 
+**Fields**
+
+Accessed via returned_control.{field}
 | Field | Type | Description |
 | ---- | ---- | ----------- |
 | object | layout | Layout object for the created control (available in API docs). |
@@ -46,6 +48,21 @@ Accessed via returned_control.{var}
 | container | container | Container object that the created control is within (available in API docs). |
 | cant_get | bool | Internal field to block user from improperly reading control values. |
 | cant_set | bool | Internal field to block user from improperly setting control values. |
+
+**Methods**
+
+Accessed via returned_control:{method}
+### get
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| ... | ... | Any required args for the regular get call for a control. |
+
+### set
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| ... | ... | Any required args for the regular set call for a control. |
 
 ## Functions
 ### ui.find_group
