@@ -4,19 +4,6 @@ ui.notification = function(head, body, ico)
     gui.notify:add(gui.notification(head, body, ico))
 end
 
--- third world enum :pog:
-ui.control = {
-    checkbox = 1,
-    slider = 2,
-    selectable = 3,
-    button = 4,
-    color_picker = 5,
-    spacer = 6,
-    text_input = 7,
-    combo_box = 8,
-    image = 9
-}
-
 -- we reimplementing functions ladies and gentlemen
 local control_meta = {}
 control_meta.__index = control_meta
@@ -24,8 +11,14 @@ control_meta.object = nil
 control_meta.control = nil
 control_meta.type = nil
 control_meta.container = nil
+control_meta.cant_get = false
+control_meta.cant_set = false
 
 function control_meta:get(...)
+    if (self.cant_get) then
+        return
+    end
+
     local arg_table = { ... }
     local return_param = arg_table[1] -- optional first argument
 
@@ -45,6 +38,10 @@ function control_meta:get(...)
 end
 
 function control_meta:set(...)
+    if (self.cant_set) then
+        return
+    end
+
     local arg_table = { ... } -- only one argument needed for now but we futureproofing this bitch
 
     -- check for control objects with a set_value func first
@@ -75,6 +72,19 @@ ui.find_group = function(path)
     return gui.ctx:find(path)
 end
 
+-- third world enum :pog:
+ui.control = {
+    checkbox = 1,
+    slider = 2,
+    selectable = 3,
+    button = 4,
+    color_picker = 5,
+    spacer = 6,
+    text_input = 7,
+    combo_box = 8,
+    image = 9
+}
+
 ui.add_control = function(control_type, control_id, label, group, ...)
     local arg_table = { ... }
 
@@ -82,13 +92,37 @@ ui.add_control = function(control_type, control_id, label, group, ...)
     local control_obj = {}
 
     setmetatable(control_obj, control_meta)
-    
+
     -- no switch statements :(
     if (control_type == ui.control.checkbox) then
         control_obj.control = gui.checkbox(control_id)
-        control_obj.object = gui.make_control(label, control_obj.control)
+    elseif (control_type == ui.control.slider) then
+        control_obj.control = gui.slider(control_id, arg_table[1], arg_table[2], arg_table[3], arg_table[4])
+    elseif (control_type == ui.control.selectable) then
+        control_obj.control = gui.selectable(control_id, arg_table[1])
+        control_meta.cant_get = true
+        control_meta.cant_set = true
+    elseif (control_type == ui.control.button) then
+        control_obj.control = gui.button(control_id, arg_table[1])
+        control_meta.cant_get = true
+        control_meta.cant_set = true
+    elseif (control_type == ui.control.color_picker) then
+        control_obj.control = gui.color_picker(control_id, arg_table[1])
+    elseif (control_type == ui.control.spacer) then
+        control_obj.control = gui.spacer(control_id)
+        control_meta.cant_get = true
+        control_meta.cant_set = true
+    elseif (control_type == ui.control.text_input) then
+        control_obj.control = gui.text_input(control_id)
+    elseif (control_type == ui.control.combo_box) then
+        control_obj.control = gui.combo_box(control_id)
+    elseif (control_type == ui.control.image) then
+        control_obj.control = gui.image(control_id, arg_table[1])
+        control_meta.cant_get = true
+        control_meta.cant_set = true
     end
 
+    control_obj.object = gui.make_control(label, control_obj.control)
     control_obj.type = control_type
     control_obj.container = group
 
