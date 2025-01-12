@@ -4,15 +4,8 @@ ui.notification = function(head, body, ico)
     gui.notify:add(gui.notification(head, body, ico))
 end
 
-local control_meta = {
-    object,
-    control,
-    type,
-    container,
-    cant_get = false,
-    cant_set = false
-}
-control_meta.__index = control_meta
+local control_meta = { object, control, type, container, cant_get = false, cant_set = false }
+control_meta.__index = {}
 
 function control_meta:get(...)
     if (self.cant_get) then
