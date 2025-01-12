@@ -100,26 +100,26 @@ ui.add_control = function(control_type, control_id, label, group, ...)
         control_obj.control = gui.slider(control_id, arg_table[1], arg_table[2], arg_table[3], arg_table[4])
     elseif (control_type == ui.control.selectable) then
         control_obj.control = gui.selectable(control_id, arg_table[1])
-        control_meta.cant_get = true
-        control_meta.cant_set = true
+        control_obj.cant_get = true
+        control_obj.cant_set = true
     elseif (control_type == ui.control.button) then
         control_obj.control = gui.button(control_id, arg_table[1])
-        control_meta.cant_get = true
-        control_meta.cant_set = true
+        control_obj.cant_get = true
+        control_obj.cant_set = true
     elseif (control_type == ui.control.color_picker) then
         control_obj.control = gui.color_picker(control_id, arg_table[1])
     elseif (control_type == ui.control.spacer) then
         control_obj.control = gui.spacer(control_id)
-        control_meta.cant_get = true
-        control_meta.cant_set = true
+        control_obj.cant_get = true
+        control_obj.cant_set = true
     elseif (control_type == ui.control.text_input) then
         control_obj.control = gui.text_input(control_id)
     elseif (control_type == ui.control.combo_box) then
         control_obj.control = gui.combo_box(control_id)
     elseif (control_type == ui.control.image) then
         control_obj.control = gui.image(control_id, arg_table[1])
-        control_meta.cant_get = true
-        control_meta.cant_set = true
+        control_obj.cant_get = true
+        control_obj.cant_set = true
     end
 
     control_obj.object = gui.make_control(label, control_obj.control)
