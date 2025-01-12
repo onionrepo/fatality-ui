@@ -93,6 +93,7 @@ ui.add_control = function(control_type, control_id, label, group, ...)
     control_obj.container = group
 
     group:add(control_obj.object)
+    group:reset()
 
     return control_obj
 end
