@@ -4,15 +4,15 @@ ui.notification = function(head, body, ico)
     gui.notify:add(gui.notification(head, body, ico))
 end
 
--- we reimplementing functions ladies and gentlemen
-local control_meta = {}
+local control_meta = {
+    object,
+    control,
+    type,
+    container,
+    cant_get = false,
+    cant_set = false
+}
 control_meta.__index = control_meta
-control_meta.object = nil
-control_meta.control = nil
-control_meta.type = nil
-control_meta.container = nil
-control_meta.cant_get = false
-control_meta.cant_set = false
 
 function control_meta:get(...)
     if (self.cant_get) then
@@ -20,13 +20,13 @@ function control_meta:get(...)
     end
 
     local arg_table = { ... }
-    local return_param = arg_table[1] -- optional first argument
+    local return_param = arg_table[1]
 
     local success, value, param_object = pcall(function()
         local param_object = self.control:get_value()
 
         if (param_object ~= nil) then
-            return param_object:get(), param_object -- return value and the param_object if they need it for whatever reason
+            return param_object:get(), param_object
         end
     end)
 
@@ -42,14 +42,13 @@ function control_meta:set(...)
         return
     end
 
-    local arg_table = { ... } -- only one argument needed for now but we futureproofing this bitch
+    local arg_table = { ... }
 
-    -- check for control objects with a set_value func first
     if (self.type == ui.control.checkbox) then
         self.control:set_value(arg_table[1])
     elseif (self.type == ui.control.text_input) then
         self.control:set_value(arg_table[1])
-    else -- guess we directly setting value_param then
+    else
         pcall(function()
             local param_object = self.control:get_value()
             
@@ -72,7 +71,6 @@ ui.find_group = function(path)
     return gui.ctx:find(path)
 end
 
--- third world enum :pog:
 ui.control = {
     checkbox = 1,
     slider = 2,
