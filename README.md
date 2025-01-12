@@ -7,7 +7,7 @@ local test_group = ui.find_group("lua>elements b")
 -- Button example
 local test_button = ui.add_control(ui.control.button, "test_button", "Test Button", test_group, "Test")
 
-ui.add_callback(test_control, function()
+ui.add_callback(test_button, function()
     print("Callback test")
 end)
 
